@@ -83,10 +83,10 @@ def load_user(id):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
+    body = db.Column(db.String(200), nullable=False)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    restaurant_id = db.Column (db.Integer, db.ForeignKey ('restaurant.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    restaurant_id = db.Column (db.Integer, db.ForeignKey ('restaurant.id'), nullable=False)
     photos = db.relationship ('Photo', backref='belong_post', lazy='dynamic')
     advertisement_id = db.Column (db.Integer, db.ForeignKey ('advertisement.id'))
     number_of_like = db.Column (db.Integer)
@@ -97,13 +97,13 @@ class Post(db.Model):
 
 class Photo(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    photo_link = db.Column(db.String(4000))
+    photo_link = db.Column(db.String(4000), nullable=False)
     number_of_like = db.Column(db.Integer)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 
 class Advertisement(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    advertisement_link = db.Column (db.String (4000))
+    advertisement_link = db.Column (db.String (4000),nullable=False,unique=True)
     posts = db.relationship('Post', backref = 'advertisment', lazy ='dynamic')
 
 restaurantfood = db.Table('restaurantfood',
@@ -119,13 +119,13 @@ restaurantfeature = db.Table('restaurantfeature',
 
 class Restaurant(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, unique=True)
+    name = db.Column(db.String(64), index=True, unique=True, nullable=False)
     posts = db.relationship('Post', backref='About_restaurant', lazy='dynamic')
-    location_id = db.Column (db.Integer, db.ForeignKey ('location.id'))
+    location_id = db.Column (db.Integer, db.ForeignKey ('location.id'),nullable=False)
     cusine_id = db.Column (db.Integer, db.ForeignKey ('cusine.id'))
     foodlist= db.relationship('Food', secondary= restaurantfood, backref=db.backref('Restaurants', lazy='dynamic'))
     rating = db.Column(db.Integer)
-    intro = db.Column(db.String(500))
+    intro = db.Column(db.String(500), nullable=False)
     contact_methods = db.relationship('Contact', backref = 'restaurant', lazy ='dynamic')
     spending_per_head = db.Column (db.Integer)
     open_hour = db.Column (db.Integer)
@@ -136,35 +136,33 @@ class Restaurant(db.Model):
 
 class Location(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    location_google_link = db.Column(db.String(140))
+    location_google_link = db.Column(db.String(4000))
     country_id = (db.Integer, db.ForeignKey('country.id'))
 
 class Country(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    name = db.Column (db.String(100), index=True, unique=True)
+    name = db.Column (db.String(100), index=True,nullable=False, unique=True)
 
 class Cusine(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    name = db.Column(db.String(140))
+    name = db.Column(db.String(140),nullable=False, unique=True)
     restaurants = db.relationship('Restaurant', backref = 'cusine', lazy ='dynamic')
 
 class Food(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    name = db.Column(db.String(140))
+    name = db.Column(db.String(140),nullable=False, unique=True)
 
 class Contact(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    telephone = db.Column (db.Integer)
-    email = db.Column(db.String(200))
-    restaurant_id = db.Column (db.Integer, db.ForeignKey ('restaurant.id'))
+    telephone = db.Column (db.Integer, unique=True)
+    email = db.Column(db.String(200), unique=True)
+    restaurant_id = db.Column (db.Integer, db.ForeignKey ('restaurant.id'),nullable=False)
 
 
 class Feature(db.Model):
     id = db.Column (db.Integer, primary_key=True)
-    name = db.Column(db.String(140))
+    name = db.Column(db.String(140), nullable=False, unique=True)
 
-class Postlist(db.Model):
-    id = db.Column (db.Integer, primary_key=True)
 
 
 class MenuItem(db.Model):
