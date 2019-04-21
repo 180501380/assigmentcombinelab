@@ -84,7 +84,7 @@ msgstr "¡Tu artículo ha sido publicado!"
 
 #: app/routes.py:55 app/templates/base.html:22
 msgid "Home"
-msgstr "Inicio"
+msgstr "家"
 
 #: app/routes.py:70 app/templates/base.html:23
 msgid "Explore"
