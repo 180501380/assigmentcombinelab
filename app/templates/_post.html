@@ -1,0 +1,20 @@
+    <table class="table table-hover">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('user', username=post.author.username) }}">
+                    <img src="{{ post.author.avatar(70) }}" />
+                </a>
+            </td>
+            <td>
+                {% set user_link %}
+                    <a href="{{ url_for('user', username=post.author.username) }}">
+                        {{ post.author.username }}
+                    </a>
+                {% endset %}
+                {{ _('%(username)s said %(when)s',
+                    username=user_link, when=moment(post.timestamp).fromNow()) }}   {# 呢度加_()有難度,要睇返上個lab先明,因為我既要轉譯到啲字,啲字則要係link,link去user個profile page,將條link轉左做個jinja2 variable,咁就可以一粒野咁掉落去_()啦 #}   {# _()唔支援formatter格式,例如flash('User {} not found.'.format(username)) 都要改成flash(_('User %(username)s not found.', username=username)) #}     {# 用_() 包住既所有string ,都會於翻譯檔進行轉譯(以client既優先language既翻譯檔進行翻譯) #}
+                <br>
+                {{ post.body }}
+            </td>
+        </tr>
+    </table>

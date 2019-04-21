@@ -1,0 +1,63 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}{{ title }} - Openrice{% else %}{{ _('Welcome to Openrice') }}{% endif %}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar bg-warning" style="background-color:#ffcc00" >
+
+        <div class="container">
+            <div class="navbar-header ">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand-img" href="{{ url_for('index') }}" ><img src="https://www.openrice.com/info/global/img/index-logo/20th-index-logo.png" class="d-inline-block align-top" alt="Logo"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">{{ _('Home') }}</a></li>
+                    <li><a href="{{ url_for('explore') }}">{{ _('Explore') }}</a></li>          {# 用_() 包住既所有string ,都會於翻譯檔進行轉譯(以client既優先language既翻譯檔進行翻譯) #}
+                </ul>
+                    <span class="navbar-text">
+                    <form class="form-inline">
+                      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                      <button class="btn btn-outline-light my-2 my-sm-0 btn-danger" type="submit">Search</button>
+                    </form>
+                    </span>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('login') }}">{{ _('Login') }}</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('user', username=current_user.username) }}">{{ _('Profile') }}</a></li>
+                    <li><a href="{{ url_for('logout') }}">{{ _('Logout') }}</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}         {# g.locale係route.py度定義既,佢係request前攞左 prefer language ,咁宜家就可以比到moment.js睇, 咁樣moment.js既時間顯示就可以對應多國語言了 #}
+{% endblock %}

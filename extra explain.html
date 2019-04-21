@@ -1,0 +1,84 @@
+<!--
+今個用到既extension係 Flask-Babel (babel解巴別塔,聖經故事)佢係一個編輯器,讓網址提供多國語言
+
+
+用_() 包住既所有string ,都會於翻譯檔進行轉譯(以client既優先language既翻譯檔進行翻譯),而佢之所以知道client 既優先language係咩,就係因為佢睇client request既header,header有client prefer language list
+但有啲string,例如form既label,佢唔洗有client request既時候已經gen出黎,咁佢就對應唔到client既prefer language作轉譯
+用_l()包住, 就可以將呢啲本生可以係client request前就gen 左既string, delay到client有request既時候先gen出黎,咁佢就可以對應到黎做翻譯了
+_l()一般都係包住form.py入面既string, _()就包住jinja2 既template 同route.py 既
+
+注意!! template file 中  _()入面如果沒有被{{ }} 包住都不會被轉譯
+
+小心唔好用_()/_l()包錯功能既野,例如route既path,唔係轉左語言就會出error
+
+當你係啲code度set好 _()同_l()
+你就可以用pybabel command 做extraction,抽曬啲標左要translate既字, 起個.pot file(stands for portable object template),個.pot file有曬你標左要translate既字 ,但呢個pot file 係無translate左既字,佢只係標左你要translate既字,translate file 係分開既
+pybabel extraction 需要有babel.cfg 呢個file佢主要係標返pyhton檔要extract既路徑係咩,jinja2 template要extract既檔係咩
+
+係terminal 度行extract既command : pybabel extract -F babel.cfg -k _l -o messages.pot .
+-F 後標返個babel.cfg , -k _l 係叫佢extract _l()所標既字 , -o後面就係標返個.pot file既名, 最後粒 . 係解current directory,即係個pot file 放係current directory
+一行個command 就會睇到佢掃左你邊啲file
+
+之後就行command: pybabel init -i messages.pot -d app/translations -l es
+(注意!! 當你係要更新個translationfile,例如之前打漏個_(),宜家加翻隻 千奇唔好行呢句,因為你行呢句,佢就重新init過個translation file,唔你之前打既翻譯就會無曬, 你要行 pybabel update -i messages.pot -d app/translations ,咁佢先會保留你之前所打既翻譯  )
+起個對應pot file 既translate file
+-i 後係對應邊個pot file   -d後係translate file 既生成位置(app/translations 呢個係flask-babel預設會查既位,所以方呢度最好)   -l後係translate既語言(如果要support多種語言,就要改呢part,改再多次個command)
+以呢個例子,個translation file 路徑就係app/translations/es/LC_MESSAGES/messages.po
+之後你就係個translation file,打返各string 對應既翻譯
+
+translation file 仲要compile先用到
+compile既command :pybabel compile -d app/translations
+-d後面為translation file 既位置
+
+每當你加左新code只要
+pybabel extract -F babel.cfg -k _l -o messages.pot .  extract多次
+pybabel update -i messages.pot -d app/translations      同update個translation file (千奇唔好行多次pybabel init)
+係translation file 打返啲翻譯
+pybabel compile -d app/translations   再compile返translate
+就得了
+
+
+今個lab 仲教左你做subcommand,將啲command 係flask度得以簡化
+要開個cli.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-->
