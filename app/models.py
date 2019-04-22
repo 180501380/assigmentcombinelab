@@ -121,7 +121,7 @@ class Restaurant(db.Model):
     id = db.Column (db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True, nullable=False)
     posts = db.relationship('Post', backref='About_restaurant', lazy='dynamic')
-    location_id = db.Column (db.Integer, db.ForeignKey ('location.id'),nullable=False)
+    location_id = db.Column (db.Integer, db.ForeignKey ('location.id'))
     cusine_id = db.Column (db.Integer, db.ForeignKey ('cusine.id'))
     foodlist= db.relationship('Food', secondary= restaurantfood, backref=db.backref('Restaurants', lazy='dynamic'))
     rating = db.Column(db.Integer)

@@ -378,7 +378,6 @@
     <column id="97" parent="19" name="location_id">
       <Position>3</Position>
       <DataType>INTEGER|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="98" parent="19" name="cusine_id">
       <Position>4</Position>

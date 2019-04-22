@@ -14,4 +14,4 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['your-email@example.com']
     LANGUAGES = ['en', 'es','zh']  #set language既config ,都係你自己set對應個翻譯檔
-    POSTS_PER_PAGE = 8
+    POSTS_PER_PAGE = 25
